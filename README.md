@@ -1,2 +1,3 @@
-# hashtrackk
+# hashtrack
+
 Repo for hashtrack API
