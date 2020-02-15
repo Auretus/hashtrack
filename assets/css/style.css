@@ -394,6 +394,7 @@ header {
 	fill: currentColor;
 	display: block;
 	box-sizing: border-box;
+	border: 0px !important;
 	width: 1.5em;
 	height: 1.5em;
 	padding: .25em;
@@ -403,12 +404,13 @@ header {
 }
 
 .search__button:focus .search__icon {
-	box-shadow: 0 0 0 3px currentColor;
+	border: 0px !important;
 }
 
 .search__icon-clear {
 	font-size: 26px;
 	margin-left: 30px !important;
+	border: 0px !important;
 }
 
 input:-webkit-autofill,
