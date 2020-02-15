@@ -1,17 +1,14 @@
 // hashtags trending start here
+var consumerKey = "YFCcIbAB6S26K4g1hzYN3gweZ";
+var consumerSecret = "LefGGvTEfOfm6nXvJsp9UIop8OMkg0ejmos8pVqA6g1w306EuS";
+var accessToken = "821496917200879616-PlzPlbxqf31caklxhLcZd7OKmTUZ9zq";
+var tokenSecret = "luobeV9ySMqXIATrKJZtoXvJJmHyTomjjjtwmXDU0FJDg";
 
-var consumerKey    = "";
-var consumerSecret = "";
-var accessToken    = "";
-var tokenSecret    = "";
-
-function getTwitter(action, woeid, x)   {
-
+function getTwitter(action, woeid, x) {
 	var accessor = {
 		consumerSecret: consumerSecret,
 		tokenSecret: tokenSecret
 	};
-
 	var message = {
 		method: "GET",
 		action: action,
@@ -24,11 +21,9 @@ function getTwitter(action, woeid, x)   {
 			callback: x
 		}
 	};
-
 	OAuth.setTimestampAndNonce(message);
 	OAuth.SignatureMethod.sign(message, accessor);
 	var url = OAuth.addToURL(message.action, message.parameters);
-
 	$.ajax({
 		type: message.method,
 		url: url,
@@ -38,41 +33,34 @@ function getTwitter(action, woeid, x)   {
 	});
 }
 
-function twitterTags(query){
-	var url = "https://api.twitter.com/1.1/search/tweets.json?q="+query;
+function twitterTags(query) {
+	// var url = "https://api.twitter.com/1.1/search/tweets.json?q="+query;
+	var url = "https://api.twitter.com/1.1/search/tweets.json?q=" + query;
 	var woeid = 2466256;
 	getTwitter(url, woeid, "test");
 };
-
-$("button").on("click", function (event) {
+$("button").on("click", function(event) {
 	event.preventDefault();
 	var value = $("#get-hashtag").val();
 	twitterTags(value)
-
-
 })
 
-
-
-
-function test(data){
+function test(data) {
 	$("#cardContainer").empty();
 	// var result = data
 	console.log(data);
-
-				for (let i = 0; i < data.statuses.length; i++) {
-		        console.log(i);
-		        var time = data.statuses[i].created_at;
-		        var newTime = time.substring(0,11)
-				console.log(newTime)
-				var hashtags = "";
-				if (!data.statuses[i].entities.hashtags.length){
-					hashtags = data.statuses[i].user.name
-				} else {
-					hashtags = "#"+data.statuses[i].entities.hashtags[0].text
-				}
-				
-		        var content=`
+	for(let i = 0; i < data.statuses.length; i++) {
+		console.log(i);
+		var time = data.statuses[i].created_at;
+		var newTime = time.substring(0, 11)
+		console.log(newTime)
+		var hashtags = "";
+		if(!data.statuses[i].entities.hashtags.length) {
+			hashtags = data.statuses[i].user.name
+		} else {
+			hashtags = "#" + data.statuses[i].entities.hashtags[0].text
+		}
+		var content = `
 		        <div class="column is-one-quarter-desktop is-half-tablet">
 							<div class="card">
 								<div class="card-image">
@@ -92,29 +80,20 @@ function test(data){
 							</div>
 						</div>
 		        `
-		        $("#cardContainer").append(content);
-		
-		        }
-	            
-	// for( var i = 0; i < result.length; i++ ) {
-	// 	var name = result[i].name;
-	// 	var url = result[i].url;                  
+		$("#cardContainer").append(content);
+	}                 
+}
 
-    }
-
-
-function update(data){
+function update(data) {
 	$(".hashContainer").empty();
-	var result = data[0].trends;              
-	for( var i = 0; i < result.length; i++ ) {
+	var result = data[0].trends;
+	for(var i = 0; i < result.length; i++) {
 		var name = result[i].name;
-		var url = result[i].url;                  
-
+		var url = result[i].url;
 		$(".hashContainer").append('<li><a href="#" target="_blank"> <div>' + name + '</div> </a> </li>');
 	}
 }
-
-$(window).load(function(){
+$(window).load(function() {
 	var url = "https://api.twitter.com/1.1/trends/place.json";
 	var woeid = 2466256;
 	getTwitter(url, woeid, "update");
