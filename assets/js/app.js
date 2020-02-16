@@ -34,8 +34,7 @@ function getTwitter(action, woeid, x) {
 }
 
 function twitterTags(query) {
-	// var url = "https://api.twitter.com/1.1/search/tweets.json?q="+query;
-	var url = "https://api.twitter.com/1.1/search/tweets.json?q=" + query;
+	var url = "https://api.twitter.com/1.1/search/tweets.json?q=%23" + query + "&include_entities=true";
 	var woeid = 2466256;
 	getTwitter(url, woeid, "test");
 };
@@ -60,6 +59,14 @@ function test(data) {
 		} else {
 			hashtags = "#" + data.statuses[i].entities.hashtags[0].text
 		}
+
+		// var media = "";
+		// if(!data.statuses[i].entities.media[0].media_url.length) {
+		// 	media = "assets/images/hashtag.jpg"
+		// } else {
+		// 	media = data.statuses[i].entities.media[0].media_url
+		// }
+		
 		var content = `
 		        <div class="column is-one-quarter-desktop is-half-tablet">
 							<div class="card">
