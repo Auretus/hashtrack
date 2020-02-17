@@ -23,26 +23,6 @@ const button = document.getElementById('button');
 		button.classList.add('is-loading');
   });
   
-
-
-// switch to dark mode
-
-var themeSwitcher = document.querySelector("#theme-switcher");
-var container = document.querySelector("body");
-var mode = "light";
-
-themeSwitcher.addEventListener("click", function() {
-  if (mode === "dark") {
-    mode = "light";
-    container.setAttribute("class", "light");
-  }
-  else {
-    mode = "dark";
-    container.setAttribute("class", "dark");
-  }
-});
-
-
 // Go to top
 
 jQuery(document).ready(function() {
@@ -60,3 +40,25 @@ jQuery(document).ready(function() {
     return false;
   })
 });
+
+// Dark Mode
+
+var darkEnabled = false; 
+$(document).ready(function() {
+        $("#theme-switcher, #theme-switcher").on("click", switchDarkMode);
+        $("#reset").on("click", reset);
+        }
+      );
+      
+      function switchDarkMode(){
+        darkEnabled = !darkEnabled;
+        if(darkEnabled){
+          $("body").addClass("dark");
+        } else {
+          $("body").removeClass("dark");
+        }
+      }
+      
+      function reset(){
+        $("body").removeClass("dark");
+      }
