@@ -34,7 +34,7 @@ function getTwitter(action, woeid, x) {
 }
 
 function twitterTags(query) {
-	var url = "https://api.twitter.com/1.1/search/tweets.json?q=%23" + query + "&include_entities=true";
+	var url = "https://api.twitter.com/1.1/search/tweets.json?q=%23" + query + "&count=40&include_entities=true";
 	var woeid = 2466256;
 	getTwitter(url, woeid, "test");
 };
@@ -42,6 +42,7 @@ $("button").on("click", function(event) {
 	event.preventDefault();
 	var value = $("#get-hashtag").val();
 	twitterTags(value)
+	$("#get-hashtag").val("");
 })
 
 function test(data) {
@@ -60,13 +61,6 @@ function test(data) {
 			hashtags = "#" + data.statuses[i].entities.hashtags[0].text
 		}
 
-		// var media = "";
-		// if(!data.statuses[i].entities.media[0].media_url.length) {
-		// 	media = "assets/images/hashtag.jpg"
-		// } else {
-		// 	media = data.statuses[i].entities.media[0].media_url
-		// }
-		
 		var content = `
 		        <div class="column is-one-quarter-desktop is-half-tablet">
 							<div class="card">
@@ -97,7 +91,7 @@ function update(data) {
 	for(var i = 0; i < result.length; i++) {
 		var name = result[i].name;
 		var url = result[i].url;
-		$(".hashContainer").append('<li><a href="#" target="_blank"> <div>' + name + '</div> </a> </li>');
+		$(".hashContainer").append('<li><a href="' + url + '" target="_blank"><div>' + name + '</div> </a> </li>');
 	}
 }
 $(window).load(function() {

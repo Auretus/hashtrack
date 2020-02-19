@@ -18,10 +18,10 @@ var headroom = new Headroom(header, {
 });
 headroom.init();
 
-const button = document.getElementById('button');
-	button.addEventListener('click', () => {
-		button.classList.add('is-loading');
-  });
+// const button = document.getElementById('button');
+// 	button.addEventListener('click', () => {
+// 		button.classList.add('is-loading');
+//   });
   
 // Go to top
 
