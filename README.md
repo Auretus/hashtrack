@@ -1,5 +1,19 @@
-# hashtrack
+# Project 01 hashtrack - UCF CodingBootCamp
+## FRONT-END made it with bulma.io framework & Twitter Api.
 
-Repo for hashtrack API
+Project 01 hashtrack - with this app is possible search hashtags from twitter and show at the same time top trending hashtags and topics per location, in this demo show only Florida State.
+- Components in this repo:
+  - HTML
+  - CSS:
+  - Bulma.oi CSS Framework
+  - FontAwesome
+  - Ionicons
+  - Javascript:
+  - headroom.js
+  - README
 
-Link to live application: [https://kiyole.github.io/hashtrack/](https://kiyole.github.io/hashtrack/)
+
+![Image of FullStackForce](https://i.postimg.cc/j203HvhL/hastrack.png)
+
+Click here to see demo!
+[HERE](https://kiyole.github.io/hashtrack/)
