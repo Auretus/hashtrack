@@ -5,69 +5,98 @@ var accessToken = "821496917200879616-PlzPlbxqf31caklxhLcZd7OKmTUZ9zq";
 var tokenSecret = "luobeV9ySMqXIATrKJZtoXvJJmHyTomjjjtwmXDU0FJDg";
 
 function getTwitter(action, woeid, x) {
-	var accessor = {
-		consumerSecret: consumerSecret,
-		tokenSecret: tokenSecret
-	};
-	var message = {
-		method: "GET",
-		action: action,
-		parameters: {
-			oauth_version: "1.0",
-			oauth_signature_method: "HMAC-SHA1",
-			oauth_consumer_key: consumerKey,
-			oauth_token: accessToken,
-			id: woeid,
-			callback: x
-		}
-	};
-	OAuth.setTimestampAndNonce(message);
-	OAuth.SignatureMethod.sign(message, accessor);
-	var url = OAuth.addToURL(message.action, message.parameters);
-	$.ajax({
-		type: message.method,
-		url: url,
-		dataType: "jsonp",
-		jsonp: false,
-		cache: true,
-	});
+  var accessor = {
+    consumerSecret: consumerSecret,
+    tokenSecret: tokenSecret
+  };
+  var message = {
+    method: "GET",
+    action: action,
+    parameters: {
+      oauth_version: "1.0",
+      oauth_signature_method: "HMAC-SHA1",
+      oauth_consumer_key: consumerKey,
+      oauth_token: accessToken,
+      id: woeid,
+      callback: x
+    }
+  };
+  OAuth.setTimestampAndNonce(message);
+  OAuth.SignatureMethod.sign(message, accessor);
+  var url = OAuth.addToURL(message.action, message.parameters);
+  $.ajax({
+    type: message.method,
+    url: url,
+    dataType: "jsonp",
+    jsonp: false,
+    cache: true
+  });
 }
 
 function twitterTags(query) {
-	var url = "https://api.twitter.com/1.1/search/tweets.json?q=%23" + query + "&include_entities=true";
-	var woeid = 2466256;
-	getTwitter(url, woeid, "test");
-};
+  var url = "https://api.twitter.com/1.1/search/tweets.json?q=%23" + query + "&include_entities=true";
+  var woeid = 2466256;
+  getTwitter(url, woeid, "test");
+}
 $("button").on("click", function(event) {
-	event.preventDefault();
-	var value = $("#get-hashtag").val();
-	twitterTags(value)
-})
+  event.preventDefault();
+  var value = $("#get-hashtag").val();
+  twitterTags(value);
+});
+
+  var toneResponse;
+function getMyDocumentTone(myCorpus) {
+  // var toneResponse;
+  var settings = {
+    url:
+      "https://api.us-south.tone-analyzer.watson.cloud.ibm.com/instances/631260ac-7831-4df4-abb7-fe1e5cd2eeb0/v3/tone?version=2017-09-21",
+    method: "POST",
+    timeout: 0,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Basic YXBpa2V5OlFSTFRCU2hFbmdzUHJsaXhoR0JraHZ2dm1CcmprRmRWY25PWlBtNi03dWNW"
+    },
+    data: JSON.stringify({ text: myCorpus })
+  };
+
+  $.ajax(settings).done(function(response) {
+    // console.log(response);
+    toneResponse = response.document_tone.tones;
+    // console.log(toneResponse);
+  });
+  console.log(toneResponse);
+  return toneResponse;
+}
 
 function test(data) {
-	$("#cardContainer").empty();
-	// var result = data
-	console.log(data);
-	for(let i = 0; i < data.statuses.length; i++) {
-		console.log(i);
-		var time = data.statuses[i].created_at;
-		var newTime = time.substring(0, 11)
-		console.log(newTime)
-		var hashtags = "";
-		if(!data.statuses[i].entities.hashtags.length) {
-			hashtags = data.statuses[i].user.name
-		} else {
-			hashtags = "#" + data.statuses[i].entities.hashtags[0].text
-		}
+  $("#cardContainer").empty();
+  // var result = data
+  console.log(data);
+  var tones = [];
+  for (let i = 0; i < data.statuses.length; i++) {
+    console.log(i);
+    var time = data.statuses[i].created_at;
+    var newTime = time.substring(0, 11);
+    console.log(newTime);
+    var hashtags = "";
+    if (!data.statuses[i].entities.hashtags.length) {
+      hashtags = data.statuses[i].user.name;
+    } else {
+      hashtags = "#" + data.statuses[i].entities.hashtags[0].text;
+    }
 
-		// var media = "";
-		// if(!data.statuses[i].entities.media[0].media_url.length) {
-		// 	media = "assets/images/hashtag.jpg"
-		// } else {
-		// 	media = data.statuses[i].entities.media[0].media_url
-		// }
-		
-		var content = `
+    // var media = "";
+    // if(!data.statuses[i].entities.media[0].media_url.length) {
+    // 	media = "assets/images/hashtag.jpg"
+    // } else {
+    // 	media = data.statuses[i].entities.media[0].media_url
+    // }
+
+    var corpus = data.statuses[i].text;
+    tones = getMyDocumentTone(corpus);
+    console.log(tones);
+
+    var content = `
 		        <div class="column is-one-quarter-desktop is-half-tablet">
 							<div class="card">
 								<div class="card-image">
@@ -83,25 +112,33 @@ function test(data) {
 										<br>
 										<time datetime="2016-1-1"> ${newTime} </time>
 									</div>
+									<div class="content">
 								</div>
 							</div>
 						</div>
-		        `
-		$("#cardContainer").append(content);
-	}                 
+		        `;
+    $("#cardContainer").append(content);
+    // var toneDiv = $("<div>").addClass("content");
+    // if (tones.length) {
+    //   tones.forEach(element => {
+    //     toneDiv.append($("<p>").text("Tone: " + element.tone_name + " Confidence: " + element.score * 100));
+    //   });
+    //   $("#cardContainer").append(toneDiv);
+    // }
+  }
 }
 
 function update(data) {
-	$(".hashContainer").empty();
-	var result = data[0].trends;
-	for(var i = 0; i < result.length; i++) {
-		var name = result[i].name;
-		var url = result[i].url;
-		$(".hashContainer").append('<li><a href="#" target="_blank"> <div>' + name + '</div> </a> </li>');
-	}
+  $(".hashContainer").empty();
+  var result = data[0].trends;
+  for (var i = 0; i < result.length; i++) {
+    var name = result[i].name;
+    var url = result[i].url;
+    $(".hashContainer").append('<li><a href="#" target="_blank"> <div>' + name + "</div> </a> </li>");
+  }
 }
 $(window).load(function() {
-	var url = "https://api.twitter.com/1.1/trends/place.json";
-	var woeid = 2466256;
-	getTwitter(url, woeid, "update");
+  var url = "https://api.twitter.com/1.1/trends/place.json";
+  var woeid = 2466256;
+  getTwitter(url, woeid, "update");
 });
