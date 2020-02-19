@@ -1,7 +1,7 @@
 # Project 01 hashtrack - UCF CodingBootCamp
-## FRONT-END made it with bulma.io framework & Twitter Api.
+## FRONT-END made with bulma.io framework & Twitter Api.
 
-Project 01 hashtrack - with this app is possible search hashtags from twitter and show at the same time top trending hashtags and topics per location, in this demo show only Florida State.
+Project 01 hashtrack - with this app it is possible to search hashtags from twitter and at the same time show top trending hashtags, and topics per location. In this demo only Florida State is available.
 - Components in this repo:
   - HTML
   - CSS:
