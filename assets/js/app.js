@@ -43,9 +43,9 @@ $("button").on("click", function(event) {
   var value = $("#get-hashtag").val();
   twitterTags(value);
 });
-
+  
   var toneResponse;
-function getMyDocumentTone(myCorpus) {
+function getMyDocumentTone(myCorpus, index) {
   // var toneResponse;
   var settings = {
     url:
@@ -62,9 +62,24 @@ function getMyDocumentTone(myCorpus) {
   $.ajax(settings).done(function(response) {
     // console.log(response);
     toneResponse = response.document_tone.tones;
+      console.log(toneResponse);
+        var toneDiv = $("<div>").addClass("content");
+    if (toneResponse.length) {
+      toneResponse.forEach(element => {
+        toneDiv.append(
+          $("<p>").text(
+            "Tone: " +
+            element.tone_name +
+            " Confidence: " +
+            element.score * 100
+          )
+        );
+      });
+      $("#tweet_" + index+" .card-content").append(toneDiv);
+        }
     // console.log(toneResponse);
   });
-  console.log(toneResponse);
+
   return toneResponse;
 }
 
@@ -93,12 +108,12 @@ function test(data) {
     // }
 
     var corpus = data.statuses[i].text;
-    tones = getMyDocumentTone(corpus);
+    tones = getMyDocumentTone(corpus, i);
     console.log(tones);
 
     var content = `
 		        <div class="column is-one-quarter-desktop is-half-tablet">
-							<div class="card">
+							<div class="card" id="tweet_${i}">
 								<div class="card-image">
 									<figure class="image is-3by2"> <img src=assets/images/hashtag.jpg alt="Placeholder image"> </figure>
 								</div>
@@ -123,7 +138,7 @@ function test(data) {
     //   tones.forEach(element => {
     //     toneDiv.append($("<p>").text("Tone: " + element.tone_name + " Confidence: " + element.score * 100));
     //   });
-    //   $("#cardContainer").append(toneDiv);
+    //   $("#tweet_${i}").append(toneDiv);
     // }
   }
 }
