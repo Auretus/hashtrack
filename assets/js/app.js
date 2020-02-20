@@ -72,7 +72,7 @@ function getMyDocumentTone(myCorpus, index) {
             "Tone: " +
             element.tone_name +
             " - Confidence: " +
-            Math.trunc(element.score * 100)
+            Math.trunc(element.score * 100) + "%"
           )
         );
       });
