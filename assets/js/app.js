@@ -39,10 +39,11 @@ function twitterTags(query) {
   getTwitter(url, woeid, "test");
 }
 $("button").on("click", function(event) {
-  event.preventDefault();
-  var value = $("#get-hashtag").val();
-  twitterTags(value);
-});
+	event.preventDefault();
+	var value = $("#get-hashtag").val();
+	twitterTags(value)
+	$("#get-hashtag").val("");
+})
   
   var toneResponse;
 function getMyDocumentTone(myCorpus, index) {
@@ -144,16 +145,16 @@ function test(data) {
 }
 
 function update(data) {
-  $(".hashContainer").empty();
-  var result = data[0].trends;
-  for (var i = 0; i < result.length; i++) {
-    var name = result[i].name;
-    var url = result[i].url;
-    $(".hashContainer").append('<li><a href="#" target="_blank"> <div>' + name + "</div> </a> </li>");
-  }
+	$(".hashContainer").empty();
+	var result = data[0].trends;
+	for(var i = 0; i < result.length; i++) {
+		var name = result[i].name;
+		var url = result[i].url;
+		$(".hashContainer").append('<li><a href="' + url + '" target="_blank"><div>' + name + '</div> </a> </li>');
+	}
 }
 $(window).load(function() {
-  var url = "https://api.twitter.com/1.1/trends/place.json";
-  var woeid = 2466256;
-  getTwitter(url, woeid, "update");
+	var url = "https://api.twitter.com/1.1/trends/place.json";
+	var woeid = 2466256;
+	getTwitter(url, woeid, "update");
 });
