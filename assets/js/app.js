@@ -34,7 +34,7 @@ function getTwitter(action, woeid, x) {
 }
 
 function twitterTags(query) {
-  var url = "https://api.twitter.com/1.1/search/tweets.json?q=%23" + query + "&include_entities=true";
+  var url = "https://api.twitter.com/1.1/search/tweets.json?q=%23" + query + "&count=56&include_entities=true";
   var woeid = 2466256;
   getTwitter(url, woeid, "test");
 }
