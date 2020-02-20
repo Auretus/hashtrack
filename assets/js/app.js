@@ -71,8 +71,8 @@ function getMyDocumentTone(myCorpus, index) {
           $("<p>").text(
             "Tone: " +
             element.tone_name +
-            " Confidence: " +
-            element.score * 100
+            " - Confidence: " +
+            Math.trunc(element.score * 100)
           )
         );
       });
